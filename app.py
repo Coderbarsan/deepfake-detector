@@ -1,4 +1,5 @@
 import tempfile
+import statistics
 import cv2
 import streamlit as st
 from PIL import Image
@@ -75,6 +76,6 @@ else:
 
         if scores:
             st.caption(f"Face found in {faces_found} of {len(scores)} checked frames.")
-            show_verdict(sum(scores) / len(scores))
+            show_verdict(statistics.median(scores))
         else:
             st.warning("I couldn't read any frames from this video.")
