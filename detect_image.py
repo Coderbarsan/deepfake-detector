@@ -8,7 +8,7 @@ detective = pipeline(
 )
 
 # 2. Open our picture
-picture = Image.open("fake.jpg").convert("RGB")
+picture = Image.open("test.jpg").convert("RGB")
 
 # 3. Ask the detective what he thinks
 results = detective(picture)

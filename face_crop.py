@@ -25,7 +25,7 @@ def crop_face(picture):
     x, y, w, h = max(faces, key=lambda f: f[2] * f[3])
 
     # 6. Add a little extra space around the face
-    pad = int(0.2 * max(w, h))
+    pad = int(0.6 * max(w, h))
     left = max(x - pad, 0)
     top = max(y - pad, 0)
     right = min(x + w + pad, picture.width)

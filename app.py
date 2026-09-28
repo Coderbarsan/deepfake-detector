@@ -3,6 +3,7 @@ import cv2
 import streamlit as st
 from PIL import Image
 from transformers import pipeline
+from face_crop import crop_face
 
 st.title("Deepfake Detector")
 
@@ -38,13 +39,17 @@ if choice == "Image":
     file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
     if file:
         picture = Image.open(file).convert("RGB")
-        st.image(picture, width=300)
-        show_verdict(fake_score(picture))
+        face, found = crop_face(picture)
+        st.image(face, width=300)
+        if found:
+            st.caption("Face found and cropped.")
+        else:
+            st.warning("No face found, so I checked the whole picture.")
+        show_verdict(fake_score(face))
 
 else:
     file = st.file_uploader("Upload a video", type=["mp4", "mov", "avi"])
     if file:
-        # OpenCV needs a real file on disk, so we save a temporary copy
         temp = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
         temp.write(file.read())
         temp.close()
@@ -53,6 +58,7 @@ else:
             video = cv2.VideoCapture(temp.name)
             step = max(int(video.get(cv2.CAP_PROP_FPS)), 1)
             scores = []
+            faces_found = 0
             frame_number = 0
 
             while len(scores) < 30:
@@ -61,11 +67,14 @@ else:
                     break
                 if frame_number % step == 0:
                     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                    scores.append(fake_score(Image.fromarray(rgb)))
+                    face, found = crop_face(Image.fromarray(rgb))
+                    faces_found += found
+                    scores.append(fake_score(face))
                 frame_number += 1
             video.release()
 
         if scores:
+            st.caption(f"Face found in {faces_found} of {len(scores)} checked frames.")
             show_verdict(sum(scores) / len(scores))
         else:
             st.warning("I couldn't read any frames from this video.")
