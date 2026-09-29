@@ -14,7 +14,7 @@ st.title("Deepfake Detector")
 def load_detective():
     return pipeline(
         "image-classification",
-        model="dima806/deepfake_vs_real_image_detection",
+        model="Wvolf/ViT_Deepfake_Detection",
     )
 
 

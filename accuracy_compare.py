@@ -5,8 +5,10 @@ from face_crop import crop_face
 
 # The detectives we want to interview
 MODELS = [
-    "prithivMLmods/Deep-Fake-Detector-v2-Model",
-    "Organika/sdxl-detector",
+    "Wvolf/ViT_Deepfake_Detection",
+    "prithivMLmods/deepfake-detector-model-v1",
+    "umm-maybe/AI-image-detector",
+    "date3k2/vit-real-fake-classification-v4",
 ]
 
 # Words that mean "this one is fake"
