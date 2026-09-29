@@ -1,5 +1,6 @@
 import tempfile
 import statistics
+import pandas as pd
 import cv2
 import streamlit as st
 from PIL import Image
@@ -77,5 +78,12 @@ else:
         if scores:
             st.caption(f"Face found in {faces_found} of {len(scores)} checked frames.")
             show_verdict(statistics.median(scores))
+            chart_data = pd.DataFrame(
+                {"Fake score (%)": [s * 100 for s in scores]},
+                index=range(1, len(scores) + 1),
+            )
+            chart_data.index.name = "Second"
+            st.subheader("Fake score for each second")
+            st.line_chart(chart_data)
         else:
             st.warning("I couldn't read any frames from this video.")
