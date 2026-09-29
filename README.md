@@ -27,6 +27,7 @@ What I learned:
 - The other two models were over-suspicious and called most real faces fake.
 - Cropping the face did not improve accuracy on this test. A tight crop made a real video look fake, and a wider border fixed it.
 - Averaging video frames can be thrown off by one odd frame, so the app uses the median.
+- Raising the "fake" cutoff (50% to 99%) did not help. For my model the best result stayed around 36-37 of 54, and for the other two the scores did not separate real from fake at all.
 
 ## Limitations
 - This is a probability, not proof. The model can be wrong.
